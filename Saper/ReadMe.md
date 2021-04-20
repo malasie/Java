@@ -1,5 +1,5 @@
 # Saper
-### This Folder contains a code in jave for a simple Saper game.
+### This Folder contains a code in java for a simple Saper game.
 The final program is supposed to:
 - have five panels:
   * game board "plansza" - the left half
