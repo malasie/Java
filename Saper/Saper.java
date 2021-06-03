@@ -409,7 +409,3 @@ class ZlaWielkość extends Exception{       //funkcja sprawdzająca wyjątki
     int wielkość;
     ZlaWielkość(int wielkość){this.wielkość=wielkość;}
 }
-
-
-
-//Maria Małasiewicz 260252
