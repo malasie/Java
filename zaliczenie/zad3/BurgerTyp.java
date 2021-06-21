@@ -1,0 +1,3 @@
+public class BurgerTyp{
+    public boolean CHEESE_BURGER, BIG_MAC, CHICKEN_BURGER,MC_ROYAL,WIES_MAC,ZINGER,GRANDER;
+}
