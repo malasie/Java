@@ -4,14 +4,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static java.lang.Boolean.TRUE;
 
 class Game {
     boolean O=false;
     boolean X=true;
-    ArrayList<String> o= new ArrayList<String>();
-    ArrayList<String> x= new ArrayList<String>();
+    int scoreX=0;
+    int scoreO=0;
+    ArrayList<Integer> o= new ArrayList<Integer>();
+    ArrayList<Integer> x= new ArrayList<Integer>();
+
 
     void nextPlayer()
     {
@@ -81,6 +85,153 @@ class TicTacToe extends JFrame {
             }
         }
     }
+    void Disable(){
+        int i, j;
+        for(j=0; j<3; j++) {
+            for (i = 0; i < 3; i++) {
+                tab[j][i].setEnabled(false);
+            }
+        }
+    }
+
+    boolean victoryX() {
+        int a, b, c;
+        boolean v = false;
+        if (gra.klikniecia < 4) {
+            v = false;
+        } else {
+            Collections.sort(gra.x);
+            if (gra.x.size() > 2) {
+                for (a = 0; a < gra.x.size() - 1; a++) {
+                    int e1 = gra.x.get(a);
+                    if (e1 == 2) {
+                        for (b = 0; b < gra.x.size() - 1; b++) {
+                            int e2 = gra.x.get(b);
+                            if (e2 == 11) {
+                                for (c = 0; c < gra.x.size(); c++) {
+                                    int e3 = gra.x.get(c);
+                                    if (e3 == 20) {
+                                        v = true;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    if (e1 == 0) {
+                        if (gra.x.get(gra.x.size() - 1) == 22) {
+                            for (b = 0; b < gra.x.size(); b++) {
+                                int e2 = gra.x.get(b);
+                                if (e2 == 11) {
+                                    v = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (e1 % 10 == 0) {
+                        if (gra.x.get(a + 1) == e1 + 1) {
+                            if (gra.x.get(a + 2) == e1 + 2) {
+                                v = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (e1 < 10) {
+                        for (b = 0; b < gra.x.size() - 1; b++) {
+                            int e2 = gra.x.get(b);
+                            if (e2 == e1 + 10) {
+                                for (c = 0; c < gra.x.size(); c++) {
+                                    int e3 = gra.x.get(c);
+                                    if (e3 == e1 + 20) {
+                                        v = true;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                        if(v)break;
+                    }
+                }
+            }
+        }
+        return v;
+    }
+
+    boolean victoryO() {
+        int a,b,c;
+        boolean v=false;
+        if (gra.klikniecia < 4) {
+            v=false;
+        }
+        else {
+            Collections.sort(gra.o);
+            if (gra.o.size() > 2) {
+                for (a = 0; a < gra.o.size() - 2; a++) {
+                    int e1 = gra.o.get(a);
+
+                    if (e1 == 0) {
+                        if (gra.o.get(gra.o.size() - 1) == 22) {
+                            for (b = 0; b < gra.o.size(); b++) {
+                                int e2 = gra.o.get(b);
+                                if (e2 == 11) {
+                                    v = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (e1 == 2) {
+                        for (b = 0; b < gra.o.size(); b++) {
+                            int e2 = gra.o.get(b);
+                            if (e2 == 11) {
+                                for (c = 0; c < gra.o.size(); c++) {
+                                    int e3 = gra.o.get(c);
+                                    if (e3 == 20) {
+                                        v = true;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    if (e1 % 10 == 0) {
+                        if (gra.o.get(a + 1) == e1 + 1) {
+                            if (gra.o.get(a + 2) == e1 + 2) {
+                                v = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (e1 < 10) {
+                        for (b = 0; b < gra.o.size() - 1; b++) {
+                            int e2 = gra.o.get(b);
+                            if (e2 == e1 + 10) {
+                                for (c = 0; c < gra.o.size(); c++) {
+                                    int e3 = gra.o.get(c);
+                                    if (e3 == e1 + 20) {
+                                        v = true;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                        if(v)break;
+                    }
+                }
+            }
+        }
+        return v;
+    }
+
+
+    boolean remis(){
+        return gra.klikniecia == 9;
+    }
 
     class Click implements ActionListener{
         int i, j;
@@ -91,16 +242,44 @@ class TicTacToe extends JFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
+            gra.klikniecia++;
             if (gra.O) {
                 tab[j][i].setBackground(Color.blue);
-                gra.nextPlayer();
-                t.setText("X's TURN");
+                gra.o.add(j*10+i);
+
+                if (victoryO()){
+                    Disable();
+                    gra.scoreO++;
+                    t.setText("O WON");
+                    t.setBackground(Color.blue);
+                    start.setEnabled(true);
+                } else if(remis()){
+                    t.setText("Remis");
+                } else{
+                    gra.nextPlayer();
+                    t.setText("X's TURN");
+                }
+
             } else {
                 tab[j][i].setBackground(Color.red);
-                gra.nextPlayer();
-                t.setText("X's TURN");
+                gra.x.add(j*10+i);
+                if (victoryX()){
+                    Disable();
+                    gra.scoreX++;
+                    t.setText("X WON");
+                    t.setBackground(Color.red);
+                    start.setEnabled(true);
+                } else if(remis()){
+                    t.setText("Remis");
+                    start.setEnabled(true);
+                } else {
+                    gra.nextPlayer();
+                    t.setText("O's TURN");
+                }
             }
+
             tab[j][i].setEnabled(false);
+            Collections.sort(gra.o);
         }
     }
 
@@ -108,8 +287,13 @@ class TicTacToe extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             int i,j;
+            gra.o.clear();
+            gra.x.clear();
+            t.setBackground(new Color(255,255,204));
+
             gra.klikniecia=0;
             gra.nextPlayer();
+            scores.setText("X: "+gra.scoreX+"             O: "+gra.scoreO);
             for(j=0; j<3; j++) {
                 for (i = 0; i < 3; i++) {
                     tab[j][i].setEnabled(true);
@@ -119,6 +303,7 @@ class TicTacToe extends JFrame {
             if (gra.O) {
                 t.setText("O's TURN");
             } else t.setText("X's TURN");
+            start.setEnabled(false);
         }
     }
 
@@ -132,3 +317,4 @@ class TicTacToe extends JFrame {
     }
 
 }
+
