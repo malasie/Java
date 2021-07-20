@@ -32,14 +32,14 @@ class Game {
 }
 
 class TicTacToe extends JFrame {
-    Game gra=new Game();
+    public static Game gra=new Game();
     JPanel board=new JPanel();
     JPanel menu= new JPanel();
     JPanel game= new JPanel();
     JTextField t= new JTextField("Rozpocznij grę klikając przycisk 'START'");
     JTextField scores= new JTextField();
-    JButton start=new JButton("START");
-    JButton restart=new JButton("RESTART");
+    static JButton start=new JButton("START");
+    JButton end=new JButton("End the Game");
     JButton tab[][] = new JButton[3][3];
 
     public TicTacToe() {
@@ -52,9 +52,10 @@ class TicTacToe extends JFrame {
         game.setLayout(new GridLayout(4,1));
         game.add(menu);
         menu.setLayout(new GridLayout(2,2));
-        menu.add(restart);
+        menu.add(end);
         menu.add(start);
         start.addActionListener(new Start());
+        end.addActionListener(new End());
         menu.add(new JLabel(""));
         game.add(t);
         t.setBackground(new Color(255,255,204));
@@ -102,7 +103,7 @@ class TicTacToe extends JFrame {
         } else {
             Collections.sort(gra.x);
             if (gra.x.size() > 2) {
-                for (a = 0; a < gra.x.size() - 1; a++) {
+                for (a = 0; a < gra.x.size() - 2; a++) {
                     int e1 = gra.x.get(a);
                     if (e1 == 2) {
                         for (b = 0; b < gra.x.size() - 1; b++) {
@@ -255,6 +256,7 @@ class TicTacToe extends JFrame {
                     start.setEnabled(true);
                 } else if(remis()){
                     t.setText("Remis");
+                    start.setEnabled(true);
                 } else{
                     gra.nextPlayer();
                     t.setText("X's TURN");
@@ -307,6 +309,19 @@ class TicTacToe extends JFrame {
         }
     }
 
+    class End implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JFrame f = new Scores();
+            f.setSize(300, 230);
+            f.setLocation(250, 250);
+            f.setVisible(true);
+        }
+    }
+
+    static void close(){
+        System.exit(0);
+    }
 
 
     public static void main(String[] args) {
@@ -314,7 +329,7 @@ class TicTacToe extends JFrame {
         f.setSize(600, 900);
         f.setLocation(100, 100);
         f.setVisible(true);
+
     }
 
 }
-
